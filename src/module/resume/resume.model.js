@@ -62,13 +62,23 @@ const ResumeSchema = new Schema(
     attachments: [
       {
         fileName: { type: String },
-        fileType: { type: String },
+        fileType: { type: String,
+          enum: [
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/pdf",
+          ],
+        },
         filePath: { type: String },
       },
     ],
     videoResume: {
       videoPath: { type: String },
       recordedAt: { type: Date },
+      liveRecording: { type: Boolean, default: false }, 
+
     },
   },
   {

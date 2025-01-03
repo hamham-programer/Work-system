@@ -9,9 +9,9 @@ class ResumeService {
     autoBind(this);
     this.#model = ResumeModel
   }
-  async createResume(data) {
+  async createResume(value) {
     try {
-        const resume = await this.#model.create(data)
+        const resume = await this.#model.create(value)
         return resume         
         
     } catch (error) {
@@ -30,9 +30,9 @@ class ResumeService {
       throw error      
     }
   }
-  async updateResume(id, data){
+  async updateResume(id, value){
     try {
-      const resume = await this.#model.findByIdAndUpdate(id, data)
+      const resume = await this.#model.findByIdAndUpdate(id, value)
       if(!resume){
         throw new createHttpError.NotFound(ResumeMessage.NotFound)
       }

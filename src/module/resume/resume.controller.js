@@ -1,16 +1,17 @@
 const autoBind = require("auto-bind");
-const ResumeModel = require("./resume.model");
 const ResumeMessage = require("./resume.message");
+const { resumeValidatioSchema } = require("../../common/middlware/resume.validation");
+const resumeService = require("./resume.service");
 class ResumeController {
   #service;
   constructor() {
     autoBind(this);
-    this.#service = ResumeModel;
+    this.#service = resumeService;
   }
   async createResume(req, res, next) {
     try {
-      const { data } = req.body;
-      const resume = await this.#service.createResume(data);
+      const {value} = resumeValidatioSchema.validate(req.body)
+      const resume = await this.#service.createResume(value);
       return res.json({
         message: ResumeMessage.ResumeSuccessfully,
         resume,
@@ -34,9 +35,9 @@ class ResumeController {
   }
   async updateResume(req, res, next) {
     try {
-      const { data } = req.body;
+      const {value} = await resumeValidatioSchema.validate(req.body)
       const { id } = req.params;
-      await this.#service.updateResume(id, data);
+      const resume = await this.#service.updateResume(id, value);
       return res.json({
         message: ResumeMessage.ResumeUpdateSuccessfully,
         resume
